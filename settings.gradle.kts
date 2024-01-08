@@ -2,7 +2,7 @@
 
 // gradle plugin
 pluginManagement {
-//    repositories.gradlePluginPortal()
+    repositories.gradlePluginPortal()
 //    repositories.google()
 //
 //    repositories.maven("https://my.location/repo") {
@@ -11,7 +11,7 @@ pluginManagement {
 //        credentials.password = "..."
 //    }
 //
-//    includeBuild("gradle/plugins")
+    includeBuild("gradle/plugins")
 }
 
 // 의존성이 존재 하는 저장소 정의

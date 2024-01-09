@@ -241,3 +241,37 @@ tasks.build {
     dependsOn(tasks.named("bundle"))
 }
 ```
+
+## Dependencies  
+### Dependency scopes (configurations)
+#### runtimeOnly 
+- 런타임에만 존재하는 의존성
+```kotlin
+//    runtimeOnly("group:name")
+dependencies {
+    implementation(project(":data-model"))
+    implementation(project(":business-logic"))
+
+    runtimeOnly("org.slf4j:slf4j-simple:1.7.36")
+}
+```
+
+#### compileOnly
+- 컴파일 단계에서만 존재하는 의존성
+```kotlin
+dependencies {
+    compileOnly("group:name")    
+}
+```
+
+#### API
+- app 이란 플젝이 business-logic 이란 프로젝트를 의존할 경우,
+- business-logic 에서 A란 의존성을 가질때
+- api("A") 를 하면 app에서는 A 의존성의 기능을 호출 가능하다
+```kotlin
+dependencies {
+    api("org.apache.commons:commons-lang3:3.12.0")
+}
+```
+- 하지만 api 를 사용하지 않고 implementation 을 통해 명시적으로 의존성을 추가 하는것을 추천한다.
+

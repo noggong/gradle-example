@@ -346,3 +346,85 @@ dependencies {
 }
 ```
 5. 중앙 플랫폼식을 사용하면 종속적 버전 카탈로그를 사용 할 수 없다.
+
+### 의존성의 전이적 의존성에 의한 버전 충돌
+- 의존성내의 의존성이 전이적 의존성 api("package:higher-version") 을 사용한다면 내가 설정한 버전보다 높은 버전의 jar를 받을수 있음
+- 이럴때 의존성에 제약을 걸수 있다
+```kotlin
+api("dependency") {
+    version {
+        strictyly("...")
+        reject("...")
+    }
+}
+```
+- 그전에 의존성들이 어떤 의족성을 가지고 있는지 확인이 중요하다
+```bash
+./gradlew :app:dependencies --configuration runtimeClasspath
+```
+- 결과
+```shell
+runtimeClasspath - Runtime classpath of source set 'main'.
++--- project :data-model
+|    \--- com.example:platform -> project :platform
+|         +--- com.fasterxml.jackson:jackson-bom:2.13.3
+|         +--- org.apache.commons:commons-lang3:3.12.0 (c)
+|         \--- org.slf4j:slf4j-api:1.7.36 (c)
++--- project :business-logic
+|    +--- project :data-model (*)
+|    +--- org.slf4j:slf4j-api:1.7.36
+|    \--- org.apache.commons:commons-lang3:3.12.0
+\--- org.slf4j:slf4j-simple:1.7.36
+     \--- org.slf4j:slf4j-api:1.7.36
+
+(c) - dependency constraint
+(*) - dependencies omitted (listed previously)
+
+A web-based, searchable dependency report is available by adding the --scan option.
+
+BUILD SUCCESSFUL in 1m 7s
+```
+#### 메타데이터 규칙 추니
+##### slf4j-simple 내 slf4j-api 의존성을 삭제 
+1. 의존성 rule 기입
+```kotlin
+dependencies.components {
+    withModule<Slf4jSimpleRule>("org.slf4j:slf4j-simple")
+}
+```
+2. 의존성 rule 생성 (/gradle/plugins/java-plugins/src/main/java/com/example/gradle/Slf4jSimpleRule)
+3. 아래 내용 작성
+```java
+package com.example.gradle;
+
+import org.gradle.api.artifacts.CacheableRule;
+import org.gradle.api.artifacts.ComponentMetadataContext;
+import org.gradle.api.artifacts.ComponentMetadataRule;
+
+@CacheableRule
+public class Slf4jSimpleRule implements ComponentMetadataRule {
+    @Override
+    public void execute(ComponentMetadataContext context) {
+        context.getDetails().allVariants(v ->
+                v.withDependencies(d -> d.removeIf(gav -> gav.getName().equals("slf4j-api"))));
+    }
+}
+
+```
+4. 결과 - org.slf4j:slf4j-simple 에서 slf4j-api 의존성이 없어짐을 확인   
+```shell
++--- project :data-model
+|    \--- com.example:platform -> project :platform
+|         +--- com.fasterxml.jackson:jackson-bom:2.13.3
+|         +--- org.apache.commons:commons-lang3:3.12.0 (c)
+|         \--- org.slf4j:slf4j-api:1.7.36 (c)
++--- project :business-logic
+|    +--- project :data-model (*)
+|    +--- org.slf4j:slf4j-api:1.7.36
+|    \--- org.apache.commons:commons-lang3:3.12.0
+\--- org.slf4j:slf4j-simple:1.7.36
+
+(c) - dependency constraint
+(*) - dependencies omitted (listed previously)
+
+```

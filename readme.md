@@ -448,7 +448,9 @@ sourceSets.create("integrationTest")
 ```
 - sourceSet 을 생성하면 각 sourceSet별 의존성을 추가할수 있다
 ```kotlin
+integrationTestImplementation(platform("com.example:platform"))
 integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
+integrationTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 ```
 
 ### custom test task 추가

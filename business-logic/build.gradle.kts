@@ -14,6 +14,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     // 위에서 정의한 source set (integrationTest) 전용 의존성 추가할 수 있다
+    integrationTestImplementation(platform("com.example:platform"))
     integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
     integrationTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 

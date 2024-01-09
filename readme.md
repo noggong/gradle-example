@@ -98,5 +98,56 @@ tasks.named<JavaCompile>("compileJava") {
     // ...    
 }
 ```
+### task 등록
+- 빌드 결과를 압축하는 task 
+- 이미 gradle 에서 제공하는 기능
+```kotlin
+// tasks.register<{출력타입}>({이름})
+
+tasks.register<Zip>("bundle") {
+    group = "My group"
+    description = "packages it all!"
+
+    from(tasks.jar) // jar task 의 결과물을 받음
+    from(configurations.runtimeClasspath)
+
+    destinationDirectory.set(layout.buildDirectory.dir("distribution"))
+}
+```
 
 
+![register_tasks.png](assests%2Fregister_tasks.png)
+
+<*등록된 task my group-bundle*>
+
+./gradlew :app:tasks 결과
+```shell
+tasks - Displays the tasks runnable from project ':app'.
+
+My group tasks
+--------------
+bundle - packages it all!
+
+Verification tasks
+------------------
+check - Runs all checks.
+``` 
+
+#### 실행
+```shell
+./gradlew :app:bundle --console=plain
+```
+##### 결과
+```shell
+> Task :data-model:classes
+> Task :data-model:jar UP-TO-DATE
+> Task :app:bundle
+
+BUILD SUCCESSFUL in 4s
+17 actionable tasks: 5 executed, 12 up-to-date
+```
+![bundle-task-resule.png](assests%2Fbundle-task-resule.png)
+
+*<압축파일 생성>*
+
+### gradle 에서 제공하지 않는 기능 task 추가

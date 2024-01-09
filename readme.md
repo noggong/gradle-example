@@ -21,6 +21,7 @@ plugins {
 3. /gradle/plugins/settings.gradle.kts 에서 /gradle/plugins/java-plugins 를 include
 4. /gradle/plugins/java-plugins 내부에 각각 필요한 `{name}.gradle.kts` 를 통해 plugin 생성
 5. 필요한 plugin 을 필요한 곳에서 include 
+> includeBuild 를 통해 디렉토리를 지정하는 대신 /buildSrc 를 만들어서 gradle plugin을 작성한다면 gradle compile 시 자동으로 buildSrc 를 읽어서 컴파일한다.
 
 ## Aplplication 실행
 - application 블럭내 app 이 실행될 main class 를 지정한다
@@ -63,4 +64,39 @@ application {
 > Task :data-model:jar UP-TO-DATE
 ```
 > UP-TO-DATE 는 이미 최신 상태이기에 실제 작업 수행은 하지 않는 task 이다
+
+## 빌드 캐시
+- gradle.properties 에 `org.gradle.caching = true` 를 설정하여 빌드 캐시 할수 있다
+- 컴파일 대상 task 의 내용이 기존과 같은것이 있다면 캐시된 컴파일 결과를 가져온다.
+- 캐시에서 task 결과를 가져올 경우 결과
+- 캐시 내용은 사용자 홈디렉토리의 .gradle/ 에 저장된다.
+```shell
+> Task :app:compileJava FROM-CACHE
+```
+> 앱 코드를 변경하면 캐시된 내용을 가져오는것이 아닌 변경된 코드를 새로 컴파일한다.
+
+## Tasks
+###  tasks 에 세부 내용 설정 
+```kotlin
+tasks.compileJava {
+    options.encoding = "UTF-8"
+}
+
+tasks.compileTestJava {
+    options.encoding = "UTF-8"
+}
+```
+- complieJava, compileTestJava 모두 반환 타입이 JavaCompile 이기 때문에 아래처럼 한번에 추가 가능하다
+```kotlin
+tasks.withType<JavaCompile>().configureEach {
+    options.encoding = "UTF-8"
+}
+```
+or 
+```kotlin
+tasks.named<JavaCompile>("compileJava") {
+    // ...    
+}
+```
+
 

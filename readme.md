@@ -450,3 +450,16 @@ sourceSets.create("integrationTest")
 ```kotlin
 integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
 ```
+
+### custom test task 추가
+- integrationTest 테스트 태그 추가
+```kotlin
+sourceSets.create("integrationTest")
+
+tasks.register<Test>("integrationTest") {
+    testClassesDirs = sourceSets["integrationTest"].output.classesDirs
+    classpath = sourceSets["integrationTest"].runtimeClasspath
+
+    useJUnitPlatform()
+}
+```

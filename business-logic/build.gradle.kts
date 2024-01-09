@@ -14,7 +14,9 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     // 위에서 정의한 source set (integrationTest) 전용 의존성 추가할 수 있다
-//    integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
+    integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
+    integrationTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
 //    api("org.apache.commons:commons-lang3") // 추가한 종속성이 컴파일 주에 전이적으로 표시된다는 의미 : business-logic 을 의존하는 플젝이 있다면 해당 프로젝트 의존성에도 표기된다.
 //    runtimeOnly("group:name") // <-- 런타임에만 존재
     // compileOnly("group:name") // <- 컴파일 단계에서만 존재

@@ -27,3 +27,16 @@ tasks.register<Zip>("bundle") {
 
     destinationDirectory.set(layout.buildDirectory.dir("distribution"))
 }
+
+// 라이프 사이클 에 task 추가
+tasks.build {
+    dependsOn(tasks.named("bundle"))
+}
+
+// 라이프 사이클 task 생성
+tasks.register("buildAll") {
+    description = "Build even more!"
+
+    dependsOn(tasks.build)
+    dependsOn(tasks.named("countJars"))
+}

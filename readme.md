@@ -207,3 +207,37 @@ public abstract class JarCount extends DefaultTask {
 }
 
 ```
+
+### 라이프 사이클 tasks
+- 아무런 작업없이 task 들을 수행한다. 
+- 아래 task는 defaultTask 타입을 갖는다
+
+#### 라이프 사이클 task 생성
+```kotlin
+// 라이프 사이클 task 생성
+tasks.register("buildAll") {
+    description = "Build even more!"
+
+    dependsOn(tasks.build)
+    dependsOn(tasks.named("countJars"))
+}
+```
+
+#### base 플로그인의 라이프 사이클 작업들
+- base 플로그인 추가
+```kotlin
+id("base")
+```
+##### build
+- 빌드 
+##### assemble
+- 코드의 컴파일과 패키징만 수행
+##### check
+- 테스트와 코드 품질 검사
+
+#### build 에 task 추가
+```kotlin
+tasks.build {
+    dependsOn(tasks.named("bundle"))
+}
+```

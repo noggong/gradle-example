@@ -16,7 +16,7 @@ pluginManagement {
 
 // 의존성이 존재 하는 저장소 정의
 dependencyResolutionManagement {
-//    repositories.mavenCentral()
+    repositories.mavenCentral()
 //    repositories.google()
 //
 //    // 개인 저장소

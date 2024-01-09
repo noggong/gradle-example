@@ -16,3 +16,9 @@ plugins {
 ```
 
 ### 빌드 구성 중앙 집중화
+1. `/gradle/plugins/settings.gradle.kts` 생성
+2. 1번에서 생성된 settings.gradle.kts 를 컴파일하기 위해 `/settings.gradle.kts` 에 `includeBuild("gradle/plugins")` 추가
+3. /gradle/plugins/settings.gradle.kts 에서 /gradle/plugins/java-plugins 를 include
+4. /gradle/plugins/java-plugins 내부에 각각 필요한 `{name}.gradle.kts` 를 통해 plugin 생성
+5. 필요한 plugin 을 필요한 곳에서 include 
+

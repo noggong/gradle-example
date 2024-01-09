@@ -275,3 +275,74 @@ dependencies {
 ```
 - 하지만 api 를 사용하지 않고 implementation 을 통해 명시적으로 의존성을 추가 하는것을 추천한다.
 
+### dependencies 제약 조건
+```kotlin
+dependencies {
+    // 버전 명시 안함
+    implementation("org.apache.commons:commons-lang3") 
+}
+dependencies.constraints {
+    // 의존성 추가처럼 보이지만 실제 추가가 아니고 단지 사용할 버전 추가임
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+}
+```
+### dependencies version 중앙 관리
+- 좋은 프로젝트는 같은 종류의 의존성은 동일한 버전을 가져야 하며, 중앙에서 관리해야한다.
+- 버전을 중앙관리 하는 방법은 두 가지 방법이 있다. 두 가지 중 편한것을 사용하면 된다. 
+  - 플랫폼 프로젝트
+  - 종속적 버전 카탈로그
+#### 플랫폼 프로젝트
+1. /gradle/plugins 를 생성하고 build.gradle.kts 를 생성한다.
+2. 아래 처럼 작성한다
+```kotlin
+plugins {
+    // 플랫폼 방식의 버전 중앙 관리
+    // 의존성 제약 조건과 의존성만 정의 한다 그 외에는 java-library 와 같음
+    // jar 같은 것이 포함되어있지 않음
+    id("java-platform")
+}
+
+// 외부에서 해당 플랫폼의 의존성 제약을 받고 싶을때 사용하는 그룹이름
+group = "com.example"
+
+javaPlatform.allowDependencies()
+dependencies {
+    // "com.fasterxml.jackson:jackson-bom:2.13.3" 의 platform 제약조건을 상속받을수 있다.
+    api(platform("com.fasterxml.jackson:jackson-bom:2.13.3"))
+}
+
+// 플랫폼 방식의 버전 중앙 관리 (의존성 제약조건)
+dependencies.constraints {
+    // 의존성 추가처럼 보이지만 실제 추가가 아니고 단지 사용할 버전 추가임
+    api("org.apache.commons:commons-lang3:3.12.0")
+    api("org.slf4j:slf4j-api:1.7.36")
+    api("org.slf4j:slf4j-simple1.7.36")
+}
+```
+3. 플랫폼 의존성 제약조건을 각 원하는 프로젝트 build.gradle.kts 에 삽입한다.
+```kotlin
+dependencies {
+    implementation(platform("com.example:platform"))
+    implementation(project(":data-model"))
+    implementation(project(":business-logic"))
+    runtimeOnly("org.slf4j:slf4j-simple")
+}
+```
+#### 종속적 버전 카탈로그
+1. /gradle/libs.version.toml 추가한다 (gradle 이 자동으로 이를 선택하고 확인한다.)
+2. libs.version.toml 에 의존성을 (`별칭 = 그룹:패키지:버전`) 작성한다. 
+```
+[libraries]
+commons-lang = "org.apache.commons:commons-lang3:3.12.0"
+slf4j-api = "org.slf4j:slf4j-api:1.7.36"
+slf4j-simple = "org.slf4j:slf4j-simple:1.7.36"
+```
+4. 별치의 dash (-) 를 점(.) 으로 변경하여 의존성을 추가한다.
+```kotlin
+dependencies {
+    implementation(project(":data-model"))
+    implementation(libs.slf4j.api)
+    implementation(libs.commons.lang)
+}
+```
+5. 중앙 플랫폼식을 사용하면 종속적 버전 카탈로그를 사용 할 수 없다.

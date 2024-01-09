@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 //    }
 //
 //    // gradle 이 또다른 빌드 할것 있음을 작성, 패치가 필요한 경우 아래처럼 사
-//    includeBuild("../my-other-project")
+    includeBuild("gradle/platform")
 }
 
 // 프로젝트 이름 (없으면 폴터이름으로 셋팅)

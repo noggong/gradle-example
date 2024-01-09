@@ -13,6 +13,11 @@
                   <project path="$PROJECT_DIR$/gradle/plugins/java-plugins" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/gradle/platform" name="platform">
+                <projects>
+                  <project path="$PROJECT_DIR$/gradle/platform" />
+                </projects>
+              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -23,6 +28,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/business-logic" />
             <option value="$PROJECT_DIR$/data-model" />
+            <option value="$PROJECT_DIR$/gradle/platform" />
             <option value="$PROJECT_DIR$/gradle/plugins" />
             <option value="$PROJECT_DIR$/gradle/plugins/java-plugins" />
           </set>

@@ -4,10 +4,11 @@ plugins {
 }
 
 dependencies {
+//    implementation(platform("com.example:platform"))
     implementation(project(":data-model"))
-    implementation("org.slf4j:slf4j-api:1.7.36")
-//    implementation("org.apache.commons:commons-lang3:3.12.0")
-    api("org.apache.commons:commons-lang3:3.12.0") // 추가한 종속성이 컴파일 주에 전이적으로 표시된다는 의미 : business-logic 을 의존하는 플젝이 있다면 해당 프로젝트 의존성에도 표기된다.
+    implementation(libs.slf4j.api)
+    implementation(libs.commons.lang)
+//    api("org.apache.commons:commons-lang3") // 추가한 종속성이 컴파일 주에 전이적으로 표시된다는 의미 : business-logic 을 의존하는 플젝이 있다면 해당 프로젝트 의존성에도 표기된다.
 //    runtimeOnly("group:name") // <-- 런타임에만 존재
     // compileOnly("group:name") // <- 컴파일 단계에서만 존재
 }
@@ -17,4 +18,9 @@ dependencies {
 //    runtimeClasspath // <- "Runtime "view" (aka Variant)
 //    compileClasspath.extendsFrom(implementation, compileOnly, ...)
 //    compileClasspath.extendsFrom(implementation, runtimeOnly, ...)
+//}
+
+//dependencies.constraints {
+    // 의존성 추가처럼 보이지만 실제 추가가 아니고 단지 사용할 버전 추가임
+//    implementation("org.apache.commons:commons-lang3:3.12.0")
 //}

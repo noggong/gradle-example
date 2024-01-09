@@ -11,13 +11,14 @@ group = "com.example"
 javaPlatform.allowDependencies()
 dependencies {
     // "com.fasterxml.jackson:jackson-bom:2.13.3" 의 platform 제약조건을 상속받을수 있다.
+    api(platform("org.junit:junit-bom:5.8.2"))
     api(platform("com.fasterxml.jackson:jackson-bom:2.13.3"))
 }
 
 // 플랫폼 방식의 버전 중앙 관리 (의존성 제약조건)
 dependencies.constraints {
     // 의존성 추가처럼 보이지만 실제 추가가 아니고 단지 사용할 버전 추가임
-    api("org.apache.commons:commons-lang3:3.12.0")
-    api("org.slf4j:slf4j-api:1.7.36")
-    api("org.slf4j:slf4j-simple1.7.36")
+//    api("org.apache.commons:commons-lang3:3.12.0")
+//    api("org.slf4j:slf4j-api:1.7.36")
+//    api("org.slf4j:slf4j-simple1.7.36")
 }

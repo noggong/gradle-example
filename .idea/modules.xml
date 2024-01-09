@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/my-project.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/my-project.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/business-logic/my-project.business-logic.integrationTest.iml" filepath="$PROJECT_DIR$/.idea/modules/business-logic/my-project.business-logic.integrationTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/business-logic/my-project.business-logic.test.iml" filepath="$PROJECT_DIR$/.idea/modules/business-logic/my-project.business-logic.test.iml" />
     </modules>
   </component>
 </project>

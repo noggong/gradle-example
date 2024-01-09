@@ -428,3 +428,25 @@ public class Slf4jSimpleRule implements ComponentMetadataRule {
 (*) - dependencies omitted (listed previously)
 
 ```
+## Test
+> Source set ? 디렉토리와 파일의 위치를 명시하는 개념 - 기본 : src/main/{java|kotlin}/
+> 이것은 명확하기때문에 intelij 에서도 인지 하고 디렉토리 추가시 아래처럼 source set 을 선책할수 있다
+> 
+> ![sourceset.png](assests%2Fsourceset.png)
+>
+> 기본 source set 의 위치를 변경 할수 있다
+> 
+> sourceSets.main {
+> 
+>   java.setSrcDirs(listOf(layout.projectDirectory.dir("sources)))
+> 
+> }
+- test source set : /src/test/{java|kotlin}
+### 통합 테스트 source set 추가
+```kotlin
+sourceSets.create("integrationTest")
+```
+- sourceSet 을 생성하면 각 sourceSet별 의존성을 추가할수 있다
+```kotlin
+integrationTestImplementation("org.junit.jupiter:junit-jupiter-api")
+```

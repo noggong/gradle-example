@@ -6,6 +6,8 @@ plugins {
     id("com.diffplug.spotless")
 }
 
+sourceSets.create("integrationTest")
+
 dependencies.components {
     withModule<Slf4jSimpleRule>("org.slf4j:slf4j-simple")
 }
